@@ -1,7 +1,7 @@
 // Configure the Google Cloud provider
 provider "google" {
  credentials = "${file("/home/vagrant/moonlit-text-244314-1b6e1ffc8c85.json")}"
- project     = "sny-oss-trf-01-01-00"
+ project     = "moonlit-text-244314"
  region      = "us-west1-a"
 }
 
@@ -28,5 +28,9 @@ resource "google_compute_instance" "default" {
    access_config {
      // Include this section to give the VM an external ip address
    }
+ }
+
+ metadata = {
+   ssh-keys = "simone_schioppo:${file("~/.ssh/id_rsa.pub")}"
  }
 }

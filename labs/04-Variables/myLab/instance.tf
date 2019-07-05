@@ -1,10 +1,3 @@
-// Configure the Google Cloud provider
-provider "google" {
- credentials = "${file("/home/vagrant/moonlit-text-244314-1b6e1ffc8c85.json")}"
- project     = "sny-oss-trf-01-01-00"
- region      = "us-west1-a"
-}
-
 // Terraform plugin for creating random ids
 resource "random_id" "instance_id" {
  byte_length = 8
@@ -18,7 +11,7 @@ resource "google_compute_instance" "default" {
 
  boot_disk {
    initialize_params {
-     image = "debian-cloud/debian-9"
+    image = "${lookup(var.IMAGE,var.REGION)}"
    }
  }
 
@@ -29,4 +22,11 @@ resource "google_compute_instance" "default" {
      // Include this section to give the VM an external ip address
    }
  }
+
+  metadata = {
+   ssh-keys = "${var.VM_USERNAME}:${file("~/.ssh/id_rsa.pub")}"
+ }
+
+
+
 }
